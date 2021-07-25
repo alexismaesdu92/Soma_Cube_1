@@ -325,7 +325,8 @@ int possibility[][5][3] = {
   {{3, 3, 4}, {4, 1, 4}, {4, 2, 4}, {4, 3, 4}, {4, 4, 4}}
 };
 
-int cube[5][5][5];
+
+int cube[5][5][5]  ={{{0}}}; 
 int tableau_solution[25] = {0};
 
 void remplir_cube(int iPiece) {
@@ -373,6 +374,7 @@ void afficher(int iPiece) {
 /*
 Se débrouiller pour ne pas avoir une complexité de 320^25... Stocker les positions...Faire qqch
  */
+
 int solution(int nb_pieces) {}
   if (nb_pieces == 10) {
     for (int iCase = 0; iCase <= 24; iCase++) {
@@ -385,9 +387,7 @@ int solution(int nb_pieces) {}
     for (int iPiece = 0; iPiece < 320; iPiece++) {
       if (piece_possible(iPiece)) {
         remplir_cube(iPiece);
-
         tableau_solution[nb_pieces] = iPiece;
-
         solution(nb_pieces+1);
         vider_cube(iPiece);
       }
@@ -396,12 +396,6 @@ int solution(int nb_pieces) {}
   return 0;
 }
 
-
-
 int main() {
-  for (int x = 0; x <= 4; x++)
-    for (int y = 0; y <= 4; y++)
-      for (int z = 0; z <= 4; z++)
-        cube[x][y][z] = 0;
   solution(0);
 }
