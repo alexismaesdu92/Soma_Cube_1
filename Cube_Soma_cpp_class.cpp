@@ -51,10 +51,7 @@ class Cube
         }
         return true;
     }
-
 };
-
-
 
 void afficher(int iPiece)
 {
@@ -71,6 +68,9 @@ void afficher(int iPiece)
 
 Cube support;
 
+/*
+Rajouter le système d'actualisation ?? 
+*/
 
 int solution(int nb_pieces)
 {
@@ -80,25 +80,21 @@ int solution(int nb_pieces)
         {
             afficher(iPiece);
         }
-        return 0;      
+        exit(0);      
     } 
     else
     {
         for (int iPiece = 0; iPiece < 320; iPiece++)
-        {
-          
+        {     
             if (support.piece_possible(iPiece))
             {
                 support.remplir_cube(iPiece);
-
                 tableau_solution[nb_pieces] = iPiece;
-
                 int s = solution(nb_pieces+1);
                 if (s != -1)
                 {
                     return s;
                 }
-
                 support.vider_cube(iPiece);
             }
         }
