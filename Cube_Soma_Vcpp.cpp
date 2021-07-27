@@ -2,7 +2,7 @@
 using namespace std;
 
 
-int possibility[][5][3] = {
+int possibility[320][5][3] = {
   {{0, 0, 0}, {0, 1, 0}, {0, 2, 0}, {0, 3, 0}, {1, 1, 0}},
   {{0, 0, 0}, {0, 1, 0}, {0, 2, 0}, {0, 3, 0}, {1, 2, 0}},
   {{0, 0, 0}, {1, 0, 0}, {1, 1, 0}, {2, 0, 0}, {3, 0, 0}},
@@ -325,77 +325,99 @@ int possibility[][5][3] = {
   {{3, 3, 4}, {4, 1, 4}, {4, 2, 4}, {4, 3, 4}, {4, 4, 4}}
 };
 
-
 int cube[5][5][5]  ={{{0}}}; 
 int tableau_solution[25] = {0};
 
-void remplir_cube(int iPiece) {
-  for (int iBlock=0; iBlock<=4; iBlock++) {
-    int x, y, z;
-    x = possibility[iPiece][iBlock][0];
-    y = possibility[iPiece][iBlock][1];
-    z = possibility[iPiece][iBlock][2];
-    cube[x][y][z] = 1;
-  }
-}
 
-void vider_cube(int iPiece) {
-  int x, y, z;
-  for (int iBlock=0; iBlock<=4; iBlock++) {
-    x = possibility[iPiece][iBlock][0];
-    y = possibility[iPiece][iBlock][1];
-    z = possibility[iPiece][iBlock][2];
-    cube[x][y][z] = 0;
-  }
-}
 
-bool piece_possible(int iPiece) {
-  for (int iBlock = 0; iBlock <= 4; iBlock++) {
-    int x, y, z;
-    x = possibility[iPiece][iBlock][0];
-    y = possibility[iPiece][iBlock][1];
-    z = possibility[iPiece][iBlock][2];
-    if (cube[x][y][z] == 1) {
-      return false;
+
+void remplir_cube(int iPiece){
+    for (int iBlock=0; iBlock<=4; iBlock++)
+    {
+        int x, y, z;
+        x = possibility[iPiece][iBlock][0];
+        y = possibility[iPiece][iBlock][1];
+        z = possibility[iPiece][iBlock][2];
+        cube[x][y][z] = 1;
     }
-  }
-  return true;
 }
 
-void afficher(int iPiece) {
-  for (int iBlock = 0; iBlock <= 4; iBlock++) {
-    for (int iCoord = 0; iCoord <= 2; iCoord++) {
-      cout << possibility[iPiece][iBlock][iCoord] << " ";
+void vider_cube(int iPiece){
+    int x, y, z;
+    for (int iBlock=0; iBlock<=4; iBlock++)
+    {       
+        x = possibility[iPiece][iBlock][0];
+        y = possibility[iPiece][iBlock][1];
+        z = possibility[iPiece][iBlock][2];
+        cube[x][y][z] = 0;
     }
-    cout << "  ";
-  }
-  cout << endl;
+}
+
+bool piece_possible(int iPiece){
+    for (int iBlock = 0; iBlock <= 4; iBlock++)
+    {
+        int x, y, z;
+        x = possibility[iPiece][iBlock][0];
+        y = possibility[iPiece][iBlock][1];
+        z = possibility[iPiece][iBlock][2];
+        if (cube[x][y][z] == 1)
+        {
+            return false;
+        }     
+    }
+    return true;
+}
+
+void afficher(int iPiece){
+    for (int iBlock = 0; iBlock <= 4; iBlock++)
+    {
+        for (int iCoord = 0; iCoord <= 2; iCoord++)
+        {
+            cout << possibility[iPiece][iBlock][iCoord] << " ";
+        }
+        cout << "  ";
+    }
+    cout << endl;
 }
 /*
 Se débrouiller pour ne pas avoir une complexité de 320^25... Stocker les positions...Faire qqch
  */
+int solution(int nb_pieces){
+    if (nb_pieces == 10)
+    {
+        for (int iPiece = 0; iPiece < nb_pieces; iPiece++)
+        {
+            afficher(iPiece);
+        }
+        return 0;      
+    } 
+    else
+    {
+        for (int iPiece = 0; iPiece < 320; iPiece++)
+        {
+            
+            if (piece_possible(iPiece))
+            {
+                remplir_cube(iPiece);
 
-int solution(int nb_pieces) {}
-  if (nb_pieces == 10) {
-    for (int iCase = 0; iCase <= 24; iCase++) {
-      cout << iCase+1 << " ";
-      afficher(tableau_solution[iCase]);
+                tableau_solution[nb_pieces] = iPiece;
+
+                int s = solution(nb_pieces+1);
+                if (s != -1)
+                {
+                    return s;
+                }
+
+                vider_cube(iPiece);
+            }
+        }
+        return -1;
     }
-    exit(0);
-  }
-  else {
-    for (int iPiece = 0; iPiece < 320; iPiece++) {
-      if (piece_possible(iPiece)) {
-        remplir_cube(iPiece);
-        tableau_solution[nb_pieces] = iPiece;
-        solution(nb_pieces+1);
-        vider_cube(iPiece);
-      }
-    }
-  }
-  return 0;
+    
 }
 
-int main() {
-  solution(0);
+int main(){
+
+    solution(0);
+
 }
